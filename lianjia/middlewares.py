@@ -2,13 +2,12 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
-import random
 
 from scrapy import signals
+import random
 
 # useful for handling different item types with a single interface
 from itemadapter import is_item, ItemAdapter
-from scrapy.downloadermiddlewares.useragent import UserAgentMiddleware
 
 
 class LianjiaSpiderMiddleware:
@@ -104,21 +103,18 @@ class LianjiaDownloaderMiddleware:
     def spider_opened(self, spider):
         spider.logger.info("Spider opened: %s" % spider.name)
 
-
-class RandomUserAgentMiddleware(UserAgentMiddleware):
-    """
-        自动随机更换UA
-    """
-    def __init__(self, user_agent_list):
-        super(RandomUserAgentMiddleware, self).__init__()
-        self.user_agent_list = user_agent_list
-
-    @classmethod
-    def from_crawler(cls, crawler):
-        return cls(
-            user_agent_list=crawler.settings.get('USER_AGENT')
-        )
+    # 随机请求头
+class UserAgentMiddleware(object):
+    def __init__(self):
+            self.user_agents_list = [
+                'Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:61.0) Gecko/20100101 Firefox/61.0',
+                'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36 OPR/26.0.1656.60',
+                'Opera/8.0 (Windows NT 5.1; U; en)',
+                'Mozilla/5.0 (Windows NT 5.1; U; en; rv:1.8.1) Gecko/20061208 Firefox/2.0.0 Opera 9.50',
+                'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; en) Opera 9.50',
+                'Mozilla/5.0 (Windows NT 6.1; WOW64; rv:34.0) Gecko/20100101 Firefox/34.0',
+            ]
 
     def process_request(self, request, spider):
-        random_user_agent = random.choice(self.user_agent_list)
-        request.headers.setdefault('User-Agent', random_user_agent)
+            user_agent = random.choice(self.user_agents_list)
+            request.headers['User-Agent'] = user_agent

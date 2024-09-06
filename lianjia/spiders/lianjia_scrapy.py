@@ -6,7 +6,7 @@ from lianjia.items import LianjiaItem
 class LianjiaScrapySpider(scrapy.Spider):
     name = "lianjia_scrapy"
     allowed_domains = ["jn.lianjia.com"]
-    start_urls = ["https://jn.lianjia.com/ershoufang/quanjingwolongqu/pg1/"]
+    start_urls = ["https://jn.lianjia.com/ershoufang/quanjingwolongqu/pg2/"]
 
     def parse(self, response):
         li_list = response.xpath('//*[@id="content"]/div[1]/ul/li')
