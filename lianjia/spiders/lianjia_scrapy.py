@@ -16,7 +16,6 @@ class LianjiaScrapySpider(scrapy.Spider):
             item['title'] = li.xpath('./div[1]/div[1]/a/text()').extract_first()
             detail_url = li.xpath('./div[1]/div[1]/a/@href').extract_first()
             print(detail_url)
-            time.sleep(1)
             yield scrapy.Request(url=detail_url, callback=self.detail_parse, meta={"item": item})
         pass
 
@@ -88,5 +87,4 @@ class LianjiaScrapySpider(scrapy.Spider):
 
         item['guapaishijian'] = response.xpath('//*[@id="introduction"]/div/div/div[2]/div[2]/ul/li[1]/span[2]/text()').extract_first()
         print(item)
-        time.sleep(1)
         pass
